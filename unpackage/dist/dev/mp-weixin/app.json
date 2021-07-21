@@ -19,10 +19,14 @@
     "list": [
       {
         "pagePath": "pages/Home/Home",
+        "iconPath": "static/home_icon.png",
+        "selectedIconPath": "static/home_active_icon.png",
         "text": "主页"
       },
       {
         "pagePath": "pages/Order/Order",
+        "iconPath": "static/order_icon.png",
+        "selectedIconPath": "static/order_active_icon.png",
         "text": "订单"
       }
     ]
@@ -34,6 +38,5 @@
   },
   "usingComponents": {
     "cu-custom": "/colorui/components/cu-custom"
-  },
-  "sitemapLocation": "sitemap.json"
+  }
 }
