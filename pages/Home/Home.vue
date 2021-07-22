@@ -3,13 +3,13 @@
   <view class="content">
     <cu-custom bgColor="bg-gradual-blue" :isBack="true">
       <block slot="backText">返回</block>
-      <block slot="content">背景</block>
+      <block slot="content">地图</block>
     </cu-custom>
     <scroll-view scroll-y="true">
       <!-- <map-component></map-component> -->
       <map id="myMap"
            :markers="markers"
-           style="width:100%;height:300px;"
+           style="width:100%;height:100vh;"
            :longitude="longitude"
            :latitude="latitude"
            scale='16' show-location>
