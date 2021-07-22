@@ -156,6 +156,7 @@ var __decorate = this && this.__decorate || function (decorators, target, key, d
 exports.__esModule = true;
 var vue_property_decorator_1 = __webpack_require__(/*! vue-property-decorator */ 20);
 var VueMixins_ts_1 = __webpack_require__(/*! ../../mixins/VueMixins.ts */ 22);
+var mapAPI_1 = __webpack_require__(/*! ../../static/api/mapAPI */ 23);
 var Home = function (_super) {
   __extends(Home, _super);
   function Home() {
@@ -222,45 +223,25 @@ var Home = function (_super) {
   };
   ;
   Home.prototype.getLocationInfo = function () {
-    var _this = this;
-    uni.getLocation({
-      type: 'gcj02',
-      success: function success(res) {
-        _this.longitude = res.longitude;
-        _this.latitude = res.latitude;
-        console.log('获取当前的用户经度', _this.longitude);
-        console.log('获取当前的用户纬度', _this.latitude);
-        _this.markers = [{
-          id: '0',
-          latitude: res.latitude,
-          longitude: res.longitude,
-          iconPath: '../../static/location_icon.png',
-          width: _this.markerHeight,
-          height: _this.markerHeight }];
-
-        _this.getPositionInfoByAddress('昆明同德广场');
-      } });
-
+    debugger;
+    var locationInfoPromise = mapAPI_1["default"].getLocation();
+    var getTargetByAddressPromise = mapAPI_1["default"].getPositionInfoByAddress();
+    Promise.all([locationInfoPromise, getTargetByAddressPromise]).
+    then(function (res) {
+      debugger;
+    });
   };
   ;
-  Home.prototype.getPositionInfoByAddress = function (address) {
-    var _this = this;
-    if (address === void 0) {address = undefined;}
-    this.$qqmapsdk.geocoder({
-      address: address,
+  Home.prototype.routePolylinePlan = function (_a, mode) {
+    var from = _a.from,to = _a.to;
+    if (mode === void 0) {mode = 'driving';}
+    this.$qqmapsdk.direction({
+      mode: mode,
+      from: from,
+      to: to,
       success: function success(res) {
+        debugger;
         console.log(res);
-        var _a = res.result,_b = _a.location,lat = _b.lat,lng = _b.lng,title = _a.title,status = res.status;
-        if (status === _this.qqMapsSDKStatusEnum.success) {
-          _this.markers = _this.markers.concat([{
-            id: _this.markers.length,
-            latitude: lat,
-            longitude: lng,
-            iconPath: '../../static/location_icon.png',
-            width: _this.markerHeight,
-            height: _this.markerHeight }]);
-
-        }
       },
       fail: function fail(error) {
         console.error(error);

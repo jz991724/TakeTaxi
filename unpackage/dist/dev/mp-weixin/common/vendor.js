@@ -9793,6 +9793,88 @@ var VueMixins = function (_super) {
 exports["default"] = VueMixins;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
+/***/ }),
+/* 23 */
+/*!*************************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/乱七八糟/TakeTaxi/static/api/mapAPI.ts ***!
+  \*************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {
+exports.__esModule = true;
+var MapAPI = function () {
+  function MapAPI() {
+  }
+  MapAPI.prototype.getLocation = function () {
+    return new Promise(function (resolve, reject) {
+      uni.getLocation({
+        type: 'gcj02',
+        success: function success(res) {
+          debugger;
+          return resolve(res);
+        },
+        fail: function fail(error) {
+          return reject(error);
+        } });
+
+    });
+  };
+  MapAPI.prototype.getPositionInfoByAddress = function (address) {
+    var _this = this;
+    if (address === void 0) {address = undefined;}
+    return new Promise(function (resolve, reject) {
+      _this.$qqmapsdk.geocoder({
+        address: address,
+        success: function success(res) {
+          var location = res.result.location,status = res.status;
+          debugger;
+          if (status === _this.qqMapsSDKStatusEnum.success) {
+            return resolve(location);
+          } else
+          {
+            return reject(false);
+          }
+        },
+        fail: function fail(error) {
+          console.error(error);
+          return reject(error);
+        },
+        complete: function complete(res) {
+          console.log(res);
+        } });
+
+    });
+  };
+  MapAPI.prototype.routePolylinePlan = function (_a, mode) {
+    var _this = this;
+    var from = _a.from,to = _a.to;
+    if (mode === void 0) {mode = 'driving';}
+    return new Promise(function (resolve, reject) {
+      _this.$qqmapsdk.direction({
+        mode: mode,
+        from: from,
+        to: to,
+        success: function success(res) {
+          debugger;
+          return resolve(res);
+        },
+        fail: function fail(error) {
+          console.error(error);
+          return reject(error);
+        },
+        complete: function complete(res) {
+          console.log(res);
+        } });
+
+    });
+  };
+  return MapAPI;
+}();
+exports["default"] = MapAPI;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
 /***/ })
 ]]);
 //# sourceMappingURL=../../.sourcemap/mp-weixin/common/vendor.js.map

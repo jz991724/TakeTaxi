@@ -12,6 +12,7 @@
            style="width:100%;height:100vh;"
            :longitude="longitude"
            :latitude="latitude"
+           :polyline="routePolyline"
            scale='16' show-location>
       </map>
     </scroll-view>
@@ -27,6 +28,7 @@ import {
 } from 'vue-property-decorator';
 
 import VueMixins from '../../mixins/VueMixins.ts';
+import MapAPI from '../../static/api/mapAPI';
 
 @Component({
   name: 'Home'
@@ -40,6 +42,9 @@ export default class Home extends Mixins(VueMixins) {
   markers = [];
   markerHeight = 30;
   doorAddress = []; //门店地址
+
+  //路线
+  routePolyline;
 
   // 拒绝授权后，弹框提示是否手动打开位置授权
   openConfirm() {
@@ -116,82 +121,96 @@ export default class Home extends Mixins(VueMixins) {
 
   // 确认授权后，获取用户位置
   getLocationInfo() {
-    uni.getLocation({
-      type: 'gcj02',
-      success: (res) => {
-        // 暂时
-        this.longitude = res.longitude; //118.787575;
-        this.latitude = res.latitude; //32.05024;
-        console.log('获取当前的用户经度', this.longitude);
-        console.log('获取当前的用户纬度', this.latitude);
-        // let long = 0;
-        // let lat = 0;
-        //小数点保留六位  经度
-        // if (this.longitude.toString()
-        //     .indexOf('.') > 0) {
-        //   const longSplit = this.longitude.toString()
-        //       .split('.');
-        //   if (longSplit.length >= 2) {
-        //     long = parseFloat(longSplit[0] === '' ? 0 : longSplit[0]) + parseFloat('.' + longSplit[1].slice(0, 6));
-        //   }
-        // }
-        // if (this.latitude.toString()
-        //     .indexOf('.') > 0) {
-        //   const latSplit = this.latitude.toString()
-        //       .split('.');
-        //   if (latSplit.length >= 2) {
-        //     lat = parseFloat(latSplit[0] === '' ? 0 : latSplit[0]) + parseFloat('.' + latSplit[1].slice(0, 6));
-        //   }
-        // }
-        // cookie.set("longitude", long);
-        // cookie.set("latitude", lat);
-        // console.log('纬度', lat);
-        // this.distance(this.latitude,this.longitude);
-        this.markers = [{
-          id: '0',
-          latitude: res.latitude,
-          longitude: res.longitude,
-          iconPath: '../../static/location_icon.png',
-          width: this.markerHeight, //宽
-          height: this.markerHeight, //高
-        },];
-        this.getPositionInfoByAddress('昆明同德广场');
-      },
-    });
+    debugger
+    let locationInfoPromise = MapAPI.getLocation();
+    let getTargetByAddressPromise = MapAPI.getPositionInfoByAddress();
+
+    Promise.all([locationInfoPromise, getTargetByAddressPromise])
+        .then(res => {
+          debugger
+        });
+
+    // uni.getLocation({
+    //   type: 'gcj02',
+    //   success: (res) => {
+    //     // 暂时
+    //     this.longitude = res.longitude; //118.787575;
+    //     this.latitude = res.latitude; //32.05024;
+    //     console.log('获取当前的用户经度', this.longitude);
+    //     console.log('获取当前的用户纬度', this.latitude);
+    //     // let long = 0;
+    //     // let lat = 0;
+    //     //小数点保留六位  经度
+    //     // if (this.longitude.toString()
+    //     //     .indexOf('.') > 0) {
+    //     //   const longSplit = this.longitude.toString()
+    //     //       .split('.');
+    //     //   if (longSplit.length >= 2) {
+    //     //     long = parseFloat(longSplit[0] === '' ? 0 : longSplit[0]) + parseFloat('.' + longSplit[1].slice(0, 6));
+    //     //   }
+    //     // }
+    //     // if (this.latitude.toString()
+    //     //     .indexOf('.') > 0) {
+    //     //   const latSplit = this.latitude.toString()
+    //     //       .split('.');
+    //     //   if (latSplit.length >= 2) {
+    //     //     lat = parseFloat(latSplit[0] === '' ? 0 : latSplit[0]) + parseFloat('.' + latSplit[1].slice(0, 6));
+    //     //   }
+    //     // }
+    //     // cookie.set("longitude", long);
+    //     // cookie.set("latitude", lat);
+    //     // console.log('纬度', lat);
+    //     // this.distance(this.latitude,this.longitude);
+    //     this.markers = [{
+    //       id: '0',
+    //       latitude: res.latitude,
+    //       longitude: res.longitude,
+    //       iconPath: '../../static/location_icon.png',
+    //       width: this.markerHeight, //宽
+    //       height: this.markerHeight, //高
+    //     },];
+    //     this.getPositionInfoByAddress('昆明同德广场');
+    //   },
+    // });
   };
 
-  //通过地址返回坐标位置信息
-  getPositionInfoByAddress(address = undefined) {
-    //调用地址解析接口
-    this.$qqmapsdk.geocoder({
-      //获取表单传入地址
-      address: address, //地址参数，例：固定地址，address: '北京市海淀区彩和坊路海淀西大街74号'
-      success: (res) => {//成功后的回调
+  //路线规划
+  routePolylinePlan({ from, to }, mode = 'driving') {
+    //调用距离计算接口
+    this.$qqmapsdk.direction({
+      mode,//可选值：'driving'（驾车）、'walking'（步行）、'bicycling'（骑行），不填默认：'driving',可不填
+      //from参数不填默认当前地址
+      from,
+      to,
+      success: (res) => {
+        debugger
         console.log(res);
-        let { result: { location: { lat, lng }, title }, status } = res;
-        if (status === this.qqMapsSDKStatusEnum.success) {
-          //根据地址解析在地图上标记解析地址位置
-          this.markers = [...this.markers, {
-            // id: this.markers.length,
-            // title: title,
-            // latitude: lat,
-            // longitude: lng,
-            // iconPath: '../../static/location_icon.png',//图标路径
-            // width: 20,
-            // height: 20,
-            // callout: { //可根据需求是否展示经纬度
-            //   content: lat + ',' + lng,
-            //   color: '#000',
-            //   display: 'ALWAYS'
-            // }
-            id: this.markers.length,
-            latitude: lat,
-            longitude: lng,
-            iconPath: '../../static/location_icon.png',
-            width: this.markerHeight, //宽
-            height: this.markerHeight, //高
-          }];
-        }
+        // var ret = res;
+        // var coors = ret.result.routes[0].polyline,
+        //     pl = [];
+        // //坐标解压（返回的点串坐标，通过前向差分进行压缩）
+        // var kr = 1000000;
+        // for (var i = 2; i < coors.length; i++) {
+        //   coors[i] = Number(coors[i - 2]) + Number(coors[i]) / kr;
+        // }
+        // //将解压后的坐标放入点串数组pl中
+        // for (var i = 0; i < coors.length; i += 2) {
+        //   pl.push({
+        //     latitude: coors[i],
+        //     longitude: coors[i + 1]
+        //   });
+        // }
+        // console.log(pl);
+        //设置polyline属性，将路线显示出来,将解压坐标第一个数据作为起点
+        // _this.setData({
+        //   latitude:pl[0].latitude,
+        //   longitude:pl[0].longitude,
+        //   polyline: [{
+        //     points: pl,
+        //     color: '#FF0000DD',
+        //     width: 4
+        //   }]
+        // })
       },
       fail: (error) => {
         console.error(error);

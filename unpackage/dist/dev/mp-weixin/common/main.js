@@ -14,7 +14,7 @@ var _store = _interopRequireDefault(__webpack_require__(/*! ./store */ 12));func
 
 _vue.default.prototype.$store = _store.default;
 _vue.default.prototype.$qqmapsdk = new _qqmapWxJssdk.default({
-  key: 'KC7BZ-ZPH3D-FDW4E-P3YJB-OYAQQ-M6BBY' });var cuCustom = function cuCustom() {__webpack_require__.e(/*! require.ensure | colorui/components/cu-custom */ "colorui/components/cu-custom").then((function () {return resolve(__webpack_require__(/*! ./colorui/components/cu-custom.vue */ 29));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
+  key: 'KC7BZ-ZPH3D-FDW4E-P3YJB-OYAQQ-M6BBY' });var cuCustom = function cuCustom() {__webpack_require__.e(/*! require.ensure | colorui/components/cu-custom */ "colorui/components/cu-custom").then((function () {return resolve(__webpack_require__(/*! ./colorui/components/cu-custom.vue */ 30));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 
 
 
