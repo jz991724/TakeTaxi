@@ -5,6 +5,7 @@
   ],
   "subPackages": [],
   "window": {
+    "navigationStyle": "custom",
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "",
     "navigationBarBackgroundColor": "#F8F8F8",

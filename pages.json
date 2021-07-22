@@ -6,7 +6,6 @@
 				"navigationBarTitleText": "主页",
 				"enablePullDownRefresh": false
 			}
-
 		},
 		{
 			"path": "pages/Order/Order",
@@ -14,9 +13,8 @@
 				"navigationBarTitleText": "订单",
 				"enablePullDownRefresh": true
 			}
-
 		}
-	],
+    ],
 	"tabBar": {
 		"color": "#7A7E83",
 		"selectedColor": "#007AFF",
@@ -35,6 +33,7 @@
 		}]
 	},
 	"globalStyle": {
+		"navigationStyle":"custom",
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "",
 		"navigationBarBackgroundColor": "#F8F8F8",

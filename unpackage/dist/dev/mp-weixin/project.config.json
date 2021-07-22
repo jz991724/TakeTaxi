@@ -6,10 +6,8 @@
   "setting": {
     "urlCheck": false,
     "es6": true,
+    "enhance": true,
     "postcss": true,
-<<<<<<< HEAD
-    "minified": true
-=======
     "preloadBackgroundData": false,
     "minified": true,
     "newFeature": false,
@@ -39,7 +37,6 @@
     "packNpmRelationList": [],
     "minifyWXSS": true,
     "showES6CompileOption": false
->>>>>>> d3da66daff5a3dce74465c1118e6691c24a4a54d
   },
   "compileType": "miniprogram",
   "libVersion": "",
@@ -47,19 +44,15 @@
   "projectname": "TakeTaxiDemo",
   "condition": {
     "search": {
-      "current": -1,
       "list": []
     },
     "conversation": {
-      "current": -1,
       "list": []
     },
     "game": {
-      "current": -1,
       "list": []
     },
     "miniprogram": {
-      "current": 0,
       "list": [
         {
           "name": "",
